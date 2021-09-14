@@ -23,7 +23,7 @@ type RUT struct {
 
 // Parse parses rut into RUT.
 //
-// When a parsing error occurs, RUT == nil and error is an error explaining what happened, wrapping ErrParse.
+// When a parsing error occurs, RUT == nil and ErrParse is returned.
 //
 // When the Verifier is invalid, then RUT != nil, but ErrInvalidVerifier is returned too.
 func Parse(rut string) (*RUT, error) {

@@ -26,12 +26,12 @@ var parseTests = []struct {
 	{
 		name:  "bad rut",
 		input: "1K.24a.45b-5",
-		err:   "parse error: strconv.ParseUint: parsing \"1K24A45B\": invalid syntax",
+		err:   "parse error",
 	},
 	{
 		name:  "really bad rut",
 		input: "224&$£^$£42342",
-		err:   "parse error: strconv.ParseUint: parsing \"224&$£^$£4234\": invalid syntax",
+		err:   "parse error",
 	},
 	{
 		name:  "lower case k",
@@ -45,6 +45,10 @@ var parseTests = []struct {
 	{
 		name:  "badly formatted",
 		input: "24. 736  732 - 2",
+	},
+	{
+		name:  "org rut with no spaces",
+		input: "760194530",
 	},
 }
 

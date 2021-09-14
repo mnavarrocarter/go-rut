@@ -6,13 +6,13 @@ import (
 )
 
 // A Formatter is a function that takes num and v and returns a formatted rut string
-type Formatter func(num uint32, v byte) string
+type Formatter func(num NationalNumber, v Verifier) string
 
 // The DefaultFormatter formats RUT in a standard way, with dots and hyphens. Example:
 // 	16.894.365-2
-var DefaultFormatter Formatter = func(num uint32, v byte) string {
+var DefaultFormatter Formatter = func(num NationalNumber, v Verifier) string {
 	p := message.NewPrinter(language.Spanish)
-	return p.Sprintf("%d-%s", num, string(v))
+	return p.Sprintf("%d-%s", num, v.String())
 }
 
 // Converts r to a string
@@ -30,5 +30,5 @@ func (r *RUT) Format(f Formatter) string {
 	if f == nil {
 		f = DefaultFormatter
 	}
-	return f(r.Number(), r.Verifier())
+	return f(r.number, r.verifier)
 }

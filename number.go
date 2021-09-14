@@ -2,7 +2,6 @@ package rut
 
 import (
 	"errors"
-	"fmt"
 	"strconv"
 )
 
@@ -26,11 +25,13 @@ func (n NationalNumber) toSeq() []uint8 {
 	return ret
 }
 
-// ParseNationalNumber parses a string to a NationalNumber
+// ParseNationalNumber parses a string to a NationalNumber.
+//
+// Returns ErrParse if there was an error parsing the number
 func ParseNationalNumber(num string) (NationalNumber, error) {
 	parsed, err := strconv.ParseUint(num, 10, 32)
 	if err != nil {
-		return NationalNumber(0), fmt.Errorf("%w: %s", ErrParse, err.Error())
+		return NationalNumber(0), ErrParse
 	}
 	return NationalNumber(parsed), nil
 }
