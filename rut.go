@@ -12,7 +12,7 @@ var ErrInvalidVerifier = errors.New("invalid verifier digit")
 // A RUT is a unique number to identify a chilean entity (person or organization) for taxing purposes
 // Generally speaking, every resident of Chile and every registered company has a RUT.
 //
-// Company RUT are all those RUT bigger than ORGDelimiter
+// Company RUT are all those RUT bigger than ORGDelimiter.
 //
 // A RUT is not as private as a SSN, but it is considered sensitive information nonetheless. You must
 // be very careful where you store it or display it.
@@ -46,6 +46,11 @@ func Parse(rut string) (*RUT, error) {
 	return r, nil
 }
 
+// ParseBytes a RUT from bytes
+func ParseBytes(rut []byte) (*RUT, error) {
+	return Parse(string(rut))
+}
+
 // MustParse is equivalent to Parse, but it panics if there is an error.
 func MustParse(rut string) *RUT {
 	r, err := Parse(rut)
@@ -55,16 +60,11 @@ func MustParse(rut string) *RUT {
 	return r
 }
 
-// New creates a RUT out of a number.
+// Make creates a RUT out of a number.
 //
 // The Verifier is calculated automatically.
-func New(number uint32) *RUT {
-	num := NationalNumber(number)
-
-	return &RUT{
-		number:   num,
-		verifier: num.Verifier(),
-	}
+func Make(number uint32) *RUT {
+	return NationalNumber(number).Rut()
 }
 
 // IsPerson returns true if this is a peron RUT.

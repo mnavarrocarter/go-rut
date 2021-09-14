@@ -6,17 +6,23 @@ import (
 )
 
 var parseTests = []struct {
-	name  string
-	input string
-	err   string
+	name     string
+	input    string
+	err      string
+	isPerson bool
+	isOrg    bool
 }{
 	{
-		name:  "nicely formatted",
-		input: "24.232.442-0",
+		name:     "nicely formatted",
+		input:    "24.232.442-0",
+		isPerson: true,
+		isOrg:    false,
 	},
 	{
-		name:  "no dots",
-		input: "16894365-2",
+		name:     "no dots",
+		input:    "16894365-2",
+		isPerson: true,
+		isOrg:    false,
 	},
 	{
 		name:  "good format but invalid",
@@ -34,8 +40,10 @@ var parseTests = []struct {
 		err:   "parse error",
 	},
 	{
-		name:  "lower case k",
-		input: "15.450.088-k",
+		name:     "lower case k",
+		input:    "15.450.088-k",
+		isPerson: true,
+		isOrg:    false,
 	},
 	{
 		name:  "invalid verifier",
@@ -43,22 +51,32 @@ var parseTests = []struct {
 		err:   "invalid verifier digit",
 	},
 	{
-		name:  "badly formatted",
-		input: "24. 736  732 - 2",
+		name:     "badly formatted",
+		input:    "24. 736  732 - 2",
+		isPerson: true,
+		isOrg:    false,
 	},
 	{
-		name:  "org rut with no spaces",
-		input: "760194530",
+		name:     "org rut with no spaces",
+		input:    "760194530",
+		isPerson: false,
+		isOrg:    true,
 	},
 }
 
 func TestParse(t *testing.T) {
 	for _, test := range parseTests {
 		t.Run(test.name, func(t *testing.T) {
-			_, err := rut.Parse(test.input)
+			r, err := rut.Parse(test.input)
 			if test.err == "" {
 				if err != nil {
 					t.Errorf("Unexpected error received: %s", err.Error())
+				}
+				if r.IsPerson() != test.isPerson {
+					t.Errorf("Rut type mismatch")
+				}
+				if r.IsOrg() != test.isOrg {
+					t.Errorf("Rut type mismatch")
 				}
 			}
 			if test.err != "" {

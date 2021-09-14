@@ -30,7 +30,7 @@ var stringTests = []struct {
 func TestString(t *testing.T) {
 	for _, test := range stringTests {
 		t.Run(test.name, func(t *testing.T) {
-			r := rut.New(test.input)
+			r := rut.Make(test.input)
 			str := r.String()
 			if str != test.expected {
 				t.Errorf("Unexpected string \"%s\" received. Expected is \"%s\"", str, test.expected)

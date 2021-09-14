@@ -38,7 +38,7 @@ func ParseNationalNumber(num string) (NationalNumber, error) {
 
 // Verifier calculates the Verifier digit of the NationalNumber.
 //
-// It uses the standard module 11 algorithm
+// It uses the standard module 11 algorithm.
 func (n NationalNumber) Verifier() Verifier {
 	seq := n.toSeq()
 	x := uint8(2)
@@ -53,4 +53,12 @@ func (n NationalNumber) Verifier() Verifier {
 	dv := 11 - (s % 11)
 	v, _ := GetVerifierByMod(dv)
 	return v
+}
+
+// Rut creates a RUT for this NationalNumber.
+func (n NationalNumber) Rut() *RUT {
+	return &RUT{
+		number:   n,
+		verifier: n.Verifier(),
+	}
 }
